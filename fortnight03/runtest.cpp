@@ -61,11 +61,19 @@ void test(bool fpOp,
 			string instruction,
 			BasicCPUTest* cpu,
 			BasicMemoryTest* memory,
+<<<<<<< HEAD
 			uint64_t startAddress,
 			uint64_t startSP,
 			uint32_t xpctdIR,
 			uint32_t xpctdA,
 			uint32_t xpctdB,
+=======
+			long startAddress,
+			long startSP,
+			int xpctdIR,
+			int xpctdA,
+			int xpctdB,
+>>>>>>> remotes/origin/master
 			ALUctrlFlag xpctdALUctrl,
 			MEMctrlFlag xpctdMEMctrl,
 			WBctrlFlag xpctdWBctrl,
@@ -78,10 +86,17 @@ int main()
 #define TEST_FILE_01 "isummation.o"
 #define TEST_FILE_02 "fpops.o"
 #define TEST_FILE_03 "isummation.o"
+<<<<<<< HEAD
 
 	// create memory
 	BasicMemoryTest* memory = new BasicMemoryTest(MEMORY_SIZE);
 
+=======
+
+	// create memory
+	BasicMemoryTest* memory = new BasicMemoryTest(MEMORY_SIZE);
+
+>>>>>>> remotes/origin/master
 	// create CPU
 	BasicCPUTest *cpu = new BasicCPUTest(memory);
 	
@@ -184,6 +199,7 @@ void test02(BasicCPUTest* cpu, BasicMemoryTest* memory, string fname)
 {
 	float fA = -0.7;
 	float fB = 0.5;
+<<<<<<< HEAD
 
 	TEST_HEADER
 
@@ -218,6 +234,48 @@ void test02(BasicCPUTest* cpu, BasicMemoryTest* memory, string fname)
 	xpctdB = Util::floatAsUint64Low(fB); // valor arbitrário para s0
 	cpu->setS(1,fA); // temos que fazer s1 valer xpctdA
 	cpu->setS(0,fB); // temos que fazer s0 valer xpctdB
+=======
+
+	TEST_HEADER
+
+	//
+	// Test SUB
+	//
+	instruction = "sub sp, sp, #32";
+	startAddress = 0x40; // endereço de 'sub sp, sp, #32'
+	xpctdIR = 0xD10083FF;
+	xpctdA = STARTSP; // SP deve ser lido para A
+	xpctdB = 32; 	 // valor imediato da instrução sub
+>>>>>>> remotes/origin/master
+	xpctdALUctrl = ALUctrlFlag::SUB;
+	xpctdMEMctrl = MEMctrlFlag::MEM_NONE;
+	xpctdWBctrl = WBctrlFlag::RegWrite;
+	
+<<<<<<< HEAD
+	xpctdALUout = Util::floatAsUint64Low(fA-fB);
+=======
+	xpctdALUout = xpctdA - xpctdB;
+>>>>>>> remotes/origin/master
+	
+	xpctdRd = xpctdALUout;
+	
+	CALLTEST();
+	RESETTEST();
+		
+
+	//
+<<<<<<< HEAD
+=======
+	// Test FSUB (linha 45)
+	//
+	fpOp = true;
+	instruction = "fsub	s0, s1, s0";
+	startAddress = 0x8C; // endereço de 'fsub	s0, s1, s0'
+	xpctdIR = 0x1E203820;
+	xpctdA = Util::floatAsUint64Low(fA);	// valor arbitrário para s1
+	xpctdB = Util::floatAsUint64Low(fB); // valor arbitrário para s0
+	cpu->setS(1,fA); // temos que fazer s1 valer xpctdA
+	cpu->setS(0,fB); // temos que fazer s0 valer xpctdB
 	xpctdALUctrl = ALUctrlFlag::SUB;
 	xpctdMEMctrl = MEMctrlFlag::MEM_NONE;
 	xpctdWBctrl = WBctrlFlag::RegWrite;
@@ -231,6 +289,7 @@ void test02(BasicCPUTest* cpu, BasicMemoryTest* memory, string fname)
 		
 
 	//
+>>>>>>> remotes/origin/master
 	// Test FADD (linha 58)
 	//
 	fpOp = true;
@@ -448,8 +507,13 @@ void testID(BasicCPUTest* cpu,
 
 	// verifica leitura de registradores
 	cout << "ID() testing registers reading..." << endl << endl;
+<<<<<<< HEAD
 	uint64_t A = cpu->getA();
 	uint64_t B = cpu->getB();
+=======
+	long A = cpu->getA();
+	long B = cpu->getB();
+>>>>>>> remotes/origin/master
 	cout << "	A=0x" << A << "; B=0x" << B << endl;
 	cout << "Expected: A=0x" << xpctdA << "; B=0x" << xpctdB << endl;
 	if ((A != xpctdA) || (B != xpctdB)){
@@ -521,7 +585,11 @@ void testID(BasicCPUTest* cpu,
 /**
  * Testa o estágio EX.
  */
+<<<<<<< HEAD
 void testEX(BasicCPUTest* cpu, bool fpOp, uint64_t xpctdALUout)
+=======
+void testEX(BasicCPUTest* cpu, bool fpOp, long xpctdALUout)
+>>>>>>> remotes/origin/master
 {
 	//
 	// Testa EXI (depende do sucesso no teste de ID)
@@ -566,7 +634,11 @@ void testEX(BasicCPUTest* cpu, bool fpOp, uint64_t xpctdALUout)
 void testMEM(BasicCPUTest* cpu,
 				BasicMemoryTest* memory,
 				MEMctrlFlag xpctdMEMctrl,
+<<<<<<< HEAD
 				uint64_t xpctdALUout)
+=======
+				long xpctdALUout)
+>>>>>>> remotes/origin/master
 {
 	//
 	// Test MEM (depends on the success of previous stages)
@@ -634,11 +706,19 @@ void testMEM(BasicCPUTest* cpu,
 	}
 	
 	// get read or written content (access depends on 32 or 64 bit mode)
+<<<<<<< HEAD
 	uint64_t memData, xpctdMemData;
 	switch (xpctdMEMctrl) {
 		case MEMctrlFlag::READ32:
 			cout << "	READ Mode: testing read content..." << endl;
 			memData = (uint64_t)memory->readData32(xpctdALUout);
+=======
+	long memData, xpctdMemData;
+	switch (xpctdMEMctrl) {
+		case MEMctrlFlag::READ32:
+			cout << "	READ Mode: testing read content..." << endl;
+			memData = (long)memory->readData32(xpctdALUout);
+>>>>>>> remotes/origin/master
 			xpctdMemData = cpu->getMDR();
 			break;
 		case MEMctrlFlag::READ64:
@@ -648,7 +728,11 @@ void testMEM(BasicCPUTest* cpu,
 			break;
 		case MEMctrlFlag::WRITE32:
 			cout << "	WRITE Mode: testing written content..." << endl;
+<<<<<<< HEAD
 			memData = (uint64_t)memory->readData32(xpctdALUout);
+=======
+			memData = (long)memory->readData32(xpctdALUout);
+>>>>>>> remotes/origin/master
 			xpctdMemData = cpu->getRd();
 			break;
 		case MEMctrlFlag::WRITE64:
@@ -725,11 +809,19 @@ void test(bool fpOp,
 			string instruction,
 			BasicCPUTest* cpu,
 			BasicMemoryTest* memory,
+<<<<<<< HEAD
 			uint64_t startAddress,
 			uint64_t startSP,
 			uint32_t xpctdIR,
 			uint32_t xpctdA,
 			uint32_t xpctdB,
+=======
+			long startAddress,
+			long startSP,
+			int xpctdIR,
+			int xpctdA,
+			int xpctdB,
+>>>>>>> remotes/origin/master
 			ALUctrlFlag xpctdALUctrl,
 			MEMctrlFlag xpctdMEMctrl,
 			WBctrlFlag xpctdWBctrl,
